@@ -3,6 +3,7 @@ from os import environ
 import mysql.connector
 import boto3
 
+
 def get_database_connection():
     """Gets a connection to the Planet Scale Database"""
     return mysql.connector.connect(
@@ -32,7 +33,7 @@ def get_all_availabilities():
     return available_list
 
 
-def send_verification_email(email):
+def send_verification_email(email: str):
     """Sends a verification email from Amazon Web Services to add an identity."""
     client = boto3.client("ses",
                           region_name="eu-west-2",
@@ -45,7 +46,7 @@ def send_verification_email(email):
         print(f"Error: {e}")
 
 
-def add_request(email, time):
+def add_request(email: str, time):
     """Adds any given request to the database."""
     conn = get_database_connection()
     cursor = conn.cursor()
@@ -57,7 +58,7 @@ def add_request(email, time):
     cursor.close()
 
 
-def verify_email(email):
+def verify_email(email: str):
     """Adds the email to AWS, this will send out a verification email."""
     conn = get_database_connection()
     cursor = conn.cursor()
