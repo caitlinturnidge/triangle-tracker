@@ -1,4 +1,6 @@
 Django==4.1.3
 python-dotenv 
 requests
-mysqlclient
+mysql-connector-python
+boto3
+datetime
