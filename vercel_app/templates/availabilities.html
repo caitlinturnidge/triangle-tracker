@@ -1,0 +1,22 @@
+{% load static %}
+<html>
+        <head>
+            <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+            <title>Available Times</title>
+        </head>
+        <body>
+            <div class="form">
+                <h3>Current Available Times:</h3>
+                
+                {% for availability in availabilities %}
+                    <h4>
+                    {{ availability }}
+                    </h4>
+                {% endfor %}
+              
+               
+                <a class=caps href="https://www.placesleisure.org/centres/the-triangle/centre-activities/sports/#timetable.com" class="booking-link" >Get Booking!</a>
+            </div>
+        
+        </body>
+</html>

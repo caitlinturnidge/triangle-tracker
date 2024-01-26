@@ -1,0 +1,32 @@
+{% load static %}
+<html>
+        <head>
+            <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+            <title>Padel Tracker</title>
+        </head>
+        <body>
+          <body>
+    <div class="Choose times!">
+      <div class="form">
+        <div class="login">
+          <div class="login-header">
+            <h3>PADEL TRACKER</h3>
+            <p>Please enter your email and the times you want to be notified about. If its your first time, please click on the link in the email from 'Amazon Web Services' after making your first request.</p>
+          </div>
+          <form method="post" class="availability-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Enter</button>
+        </form>
+    </div>
+        <p>See the times the Padel court is available within the next two weeks:</p>
+        <form  method="post" class="login-form">
+          {% csrf_token %}
+          <button>Check Availabilities</button>
+        </form>
+           
+      </div>
+    </div>
+  </body>
+        </body>
+</html>
