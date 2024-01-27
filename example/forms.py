@@ -10,10 +10,10 @@ class AvailabilityForm(forms.Form):
                     (datetime.now() + timedelta(days=i)).strftime('%A, %B %d, %Y'))
                     for i in range(14)]
     date = forms.ChoiceField(choices=date_choices, widget=forms.Select(
-        attrs={'class': 'form-control'}))
+        attrs={'class': 'form-control', 'style': 'height:40px; font-size:20px;'}))
 
     hour_choices = [(f'{hour:02}:00', f'{hour:02}:00')
                     for hour in range(6, 22)]
 
     time = forms.ChoiceField(choices=hour_choices, widget=forms.Select(
-        attrs={'class': 'form-control'}))
+        attrs={'class': 'form-control', 'style': 'height:40px; font-size:20px;'}))
