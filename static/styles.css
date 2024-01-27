@@ -48,9 +48,13 @@ margin-bottom: 26px;
   padding: 15px;
   color: #FFFFFF;
   font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
+  -webkit-transition: background-color 0.3 ease;
+  transition: background-color 0.3 ease;
   cursor: pointer;
+}
+.form button:hover {
+  background-color: #276f6b !important;
+  background-image: linear-gradient(45deg, #276f6b, #06853a);
 }
 .form .message {
   margin: 15px 0 0;
