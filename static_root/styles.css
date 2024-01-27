@@ -80,3 +80,13 @@ body {
     text-transform: uppercase;
     font-size: larger;
 }
+
+@media only screen and (max-width: 600px) {
+  .login-page {
+    width: 100%;
+  }
+
+  .form {
+    padding: 40px;
+  }
+}
