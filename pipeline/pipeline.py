@@ -3,7 +3,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
 from os import environ
+from concurrent.futures import ThreadPoolExecutor
 
+import logging
 import mysql.connector
 from dotenv import load_dotenv
 from requests import get
@@ -12,10 +14,6 @@ import boto3
 BASE_URL = 'https://pfpleisure-pochub.org/LhWeb/en-gb/api'
 PADEL = '3eee0ef5-1278-4197-91e7-5a14ef5b7234'
 THE_TRIANGLE = '0ee06fb9-09cd-44a0-a316-a28f68dc1c7a'
-
-NOW = datetime.now()
-
-load_dotenv()
 
 
 def get_database_connection():
@@ -27,6 +25,13 @@ def get_database_connection():
         database=environ["DB_NAME"],
         auth_plugin='mysql_native_password'
     )
+
+
+def set_up_logger():
+    """Set up a logger, to log pipeline progress to the console."""
+    logging.basicConfig(level=logging.INFO,
+                        format='%(asctime)s - %(levelname)s - %(message)s')
+    return logging.getLogger('logger')
 
 
 def get_availabilities(date: str):
@@ -112,16 +117,26 @@ def check_alerts_and_email(conn, time):
     cursor.close()
 
 
-def main():
-    """Goes through each day in the next two weeks and adds/checks its status from the API and adds it to the database."""
+def process_day(date):
+    logger = set_up_logger()
+    availabilities = get_availabilities(date)
     connection = get_database_connection()
-    for i in range(14):
-        time = NOW + timedelta(i)
-        time = time.strftime("%Y/%m/%d")
-        availabilities = get_availabilities(time)
-        for event in availabilities:
-            add_availability(connection, event)
+    logger.info(f"Processing data for {date}")
+    for event in availabilities:
+        add_availability(connection, event)
+
+
+def handler(event=None, context=None):
+    """Goes through each day in the next two weeks and adds/checks its status from the API and adds it to the database."""
+    logger = set_up_logger()
+    logger.info("Starting Pipeline")
+    load_dotenv()
+    with ThreadPoolExecutor() as executor:
+        days = [(datetime.now() + timedelta(i)).strftime("%Y/%m/%d")
+                for i in range(14)]
+        executor.map(process_day, days)
+    logger.info("Complete")
 
 
 if __name__ == "__main__":
-    main()
+    handler()

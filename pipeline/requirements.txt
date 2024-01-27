@@ -1,0 +1,5 @@
+python-dotenv 
+requests
+mysql-connector-python
+boto3
+datetime
