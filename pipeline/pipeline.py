@@ -6,7 +6,8 @@ from os import environ
 from concurrent.futures import ThreadPoolExecutor
 
 import logging
-import mysql.connector
+
+from psycopg2 import extensions, connect
 from dotenv import load_dotenv
 from requests import get
 import boto3
@@ -18,12 +19,12 @@ THE_TRIANGLE = '0ee06fb9-09cd-44a0-a316-a28f68dc1c7a'
 
 def get_database_connection():
     """Gets a connection to the Planet Scale Database"""
-    return mysql.connector.connect(
+    return connect(
         host=environ["DB_HOST"],
         user=environ["DB_USER"],
         password=environ["DB_PASSWORD"],
-        database=environ["DB_NAME"],
-        auth_plugin='mysql_native_password'
+        port=environ["DB_PORT"],
+        database=environ["DB_NAME"]
     )
 
 
