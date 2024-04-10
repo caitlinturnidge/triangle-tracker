@@ -1,17 +1,17 @@
 """Database functions for the views.py file."""
 from os import environ
-import mysql.connector
+from psycopg2 import extensions, connect
 import boto3
 
 
 def get_database_connection():
     """Gets a connection to the Planet Scale Database"""
-    return mysql.connector.connect(
+    return connect(
         host=environ["DB_HOST"],
         user=environ["DB_USER"],
         password=environ["DB_PASSWORD"],
-        database=environ["DB_NAME"],
-        auth_plugin='mysql_native_password'
+        port=environ["DB_PORT"],
+        database=environ["DB_NAME"]
     )
 
 
@@ -27,7 +27,7 @@ def get_all_availabilities():
     available_list = []
     for row in rows:
         formatted_datetime = row[1].strftime("%d-%m-%Y %H:%M")
-        if formatted_datetime.split(' ')[1][:2] not in {'06', '07', '08'}:
+        if formatted_datetime.split(' ')[1][:2] not in {'06', '07'}:
             day_of_week = row[1].strftime("%A")
             available_list.append(day_of_week + ' ' + formatted_datetime)
     return available_list
@@ -63,7 +63,7 @@ def verify_email(email: str):
     conn = get_database_connection()
     cursor = conn.cursor()
     query = f"""SELECT * FROM requests
-               WHERE email = '{email}';"""
+                WHERE email = '{email}';"""
     cursor.execute(query)
     rows = cursor.fetchall()
     if len(rows) == 0:
