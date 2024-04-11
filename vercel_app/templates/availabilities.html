@@ -8,13 +8,14 @@
             <div class="form">
                 <h2>Available Times:</h2>
                 
-                {% for availability in availabilities %}
-                    <h3>
-                    {{ availability }}
-                    </h3>
-                {% endfor %}
-              
-               
+                {% if availabilities %}
+                    {% for availability in availabilities %}
+                        <h3>{{ availability }}</h3>
+                    {% endfor %}
+                {% else %}
+                    <p>Uh oh, none available!</p>
+                {% endif %}
+
                 <a class=caps href="https://www.placesleisure.org/centres/the-triangle/centre-activities/sports/#timetable.com" class="booking-link" >Get Booking!</a>
             </div>
         
